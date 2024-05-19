@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10 login-box shadow p-4 mt-5 bg-light rounded">
+      <!-- Header -->
+      <div class="text-center p-2" style="background-color: #4A5A6A; color: #FFF;">
+        <h2>Customer Details</h2>
+      </div>
+
+      <!-- Customer Details Form -->
+      <form #customerDetailsForm="ngForm">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="firstName">First Name:</label>
+              <input type="text" class="form-control-plaintext" id="firstName" [(ngModel)]="CustomerDetails.firstName" name="firstName" readonly>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name:</label>
+              <input type="text" class="form-control-plaintext" id="lastName" [(ngModel)]="CustomerDetails.lastName" name="lastName" readonly>
+            </div>
+            <div class="form-group">
+              <label for="phoneNumber">Phone Number:</label>
+              <input type="text" class="form-control-plaintext" id="phoneNumber" [(ngModel)]="CustomerDetails.phoneNumber" name="phoneNumber" readonly>
+            </div>
+            <div class="form-group">
+              <label for="emailAddress">Email Address:</label>
+              <input type="email" class="form-control-plaintext" id="emailAddress" [(ngModel)]="CustomerDetails.emailAddress" name="emailAddress" readonly>
+            </div>
+            <div class="form-group">
+              <label for="city">City:</label>
+              <input type="text" class="form-control-plaintext" id="city" [(ngModel)]="CustomerDetails.city" name="city" readonly>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="addressLine1">Address Line 1:</label>
+              <input type="text" class="form-control-plaintext" id="addressLine1" [(ngModel)]="CustomerDetails.addressLine1" name="addressLine1" readonly>
+            </div>
+            <div class="form-group">
+              <label for="addressLine2">Address Line 2:</label>
+              <input type="text" class="form-control-plaintext" id="addressLine2" [(ngModel)]="CustomerDetails.addressLine2" name="addressLine2" readonly>
+            </div>
+            <div class="form-group">
+              <label for="addressLine3">Address Line 3:</label>
+              <input type="text" class="form-control-plaintext" id="addressLine3" [(ngModel)]="CustomerDetails.addressLine3" name="addressLine3" readonly>
+            </div>
+            <div class="form-group">
+              <label for="pincode">Pincode:</label>
+              <input type="text" class="form-control-plaintext" id="pincode" [(ngModel)]="CustomerDetails.pincode" name="pincode" readonly>
+            </div>
+            <div class="form-group">
+              <label for="country">Country:</label>
+              <input type="text" class="form-control-plaintext" id="country" [(ngModel)]="CustomerDetails.country" name="country" readonly>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="row justify-content-end pr-3">
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary mr-2" (click)="onEdit()">Edit</button>
+            <button type="button" class="btn btn-danger mr-2" (click)="onDelete()">Delete</button>
+            <button type="button" class="btn btn-secondary" (click)="onBack()">Back</button>
+          </div>
+        </div>
+
+        <!-- Delete Confirmation -->
+        <div *ngIf="showDeleteConfirmation" class="overlay">
+          <div class="modal-content">
+            <h4>Are you sure you want to delete this customer?</h4>
+            <p>Deleting the customer will also delete all accounts related to this customer permanently, and you will not be a user anymore.</p>
+
+          <div class="text-right">
+            <button class="btn btn-danger" (click)="confirmDelete()">Yes, Delete</button>
+            <button class="btn btn-secondary" (click)="onCancelDelete()">Cancel</button>
+          </div>
+        </div>
+      </div>
+ 
