@@ -1,44 +1,37 @@
-<div class="container mt-4">
-    <div class="text-center p-2" style="background-color: #4A5A6A; color: #FFF;">
-        <h2>Customer Documents</h2>
-      </div>
+<div *ngIf="loading" class="loading-overlay">
+  <div class="spinner"></div>
+  Loading...
+</div>
 
-    <form (submit)="onUpdateDocument()" (ngSubmit)="$event.preventDefault()">
-      <!-- Photo Section -->
-      <div class="mb-4">
-        <h5>Photo</h5>
-        <img *ngIf="photo" [src]="photo" alt="Customer Photo" class="img-thumbnail mb-2" style="max-width: 300px;">
-        <div>
-          <label for="photoFile" class="form-label">Update Photo:</label>
-          <input type="file" id="photoFile" (change)="onFileChange($event, 'photo')" class="form-control">
-        </div>
-      </div>
-  
-      <!-- Aadhar Card Section -->
-      <div class="mb-4">
-        <h5>Aadhar Card</h5>
-        <img *ngIf="aadhar" [src]="aadhar" alt="Aadhar Card" class="img-thumbnail mb-2" style="max-width: 300px;">
-        <div>
-          <label for="aadharFile" class="form-label">Update Aadhar Card:</label>
-          <input type="file" id="aadharFile" (change)="onFileChange($event, 'aadhar')" class="form-control">
-        </div>
-      </div>
-  
-      <!-- PAN Card Section -->
-      <div class="mb-4">
-        <h5>PAN Card</h5>
-        <img *ngIf="panCard" [src]="panCard" alt="PAN Card" class="img-thumbnail mb-2" style="max-width: 300px;">
-        <div>
-          <label for="panCardFile" class="form-label">Update PAN Card:</label>
-          <input type="file" id="panCardFile" (change)="onFileChange($event, 'panCard')" class="form-control">
-        </div>
-      </div>
-  
-      <!-- Action Buttons -->
-      <div class="actions">
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-        <button type="button" (click)="onBack()" class="btn btn-secondary">Back</button>
-      </div>
-    </form>
+<div class="container document-section">
+  <h2 class="document-heading text-center bg-primary text-white py-2">Customer Documents</h2>
+
+  <!-- Display Photo -->
+  <div class="document-display text-center mb-3">
+    <h3>Photo</h3>
+    <img *ngIf="photo" [src]="photo" alt="Customer Photo" class="img-thumbnail">
+    <input type="file" (change)="onFileChange($event, 'photo')" class="form-control-file mt-2">
   </div>
-  
+
+  <!-- Display Aadhar Card -->
+  <div class="document-display text-center mb-3">
+    <h3>Aadhar Card</h3>
+    <img *ngIf="aadhar" [src]="aadhar" alt="Aadhar Card" class="img-thumbnail">
+    <input type="file" (change)="onFileChange($event, 'aadhar')" class="form-control-file mt-2">
+  </div>
+
+  <!-- Display PAN Card -->
+  <div class="document-display text-center mb-3">
+    <h3>PAN Card</h3>
+    <img *ngIf="panCard" [src]="panCard" alt="PAN Card" class="img-thumbnail">
+    <input type="file" (change)="onFileChange($event, 'panCard')" class="form-control-file mt-2">
+  </div>
+
+  <div *ngIf="message" class="alert alert-info text-center">{{ message }}</div>
+  <div></div>
+  <!-- Update Documents Button -->
+  <div class="text-center mt-4">
+    <button class="btn btn-primary mr-2" (click)="onUpdateDocument()">Update</button>
+    <button class="btn btn-secondary" (click)="onBack()">Back</button>
+  </div>
+</div>

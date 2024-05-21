@@ -4,16 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { CustomersApiService } from './customer-api-service';
 import { CustomerModel } from './view-profile.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-edit-profile',
   standalone: true,
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.css'],
-  imports: [FormsModule, HttpClientModule, RouterModule] // Correct imports here
+  imports: [FormsModule, HttpClientModule, RouterModule,CommonModule] // Correct imports here
 })
 export class EditProfileComponent implements OnInit {
   customer: CustomerModel = new CustomerModel();
+  message: string | null = null;
+  messageType: string | null = null; // 'success' or 'error'
 
   constructor(
     private apiService: CustomersApiService,
@@ -30,7 +33,8 @@ export class EditProfileComponent implements OnInit {
         },
         error: (error) => {
           console.error('Failed to load customer details:', error);
-          alert('Failed to load customer details');
+          this.message = 'Failed to load customer details';
+          this.messageType = 'error';
         }
       });
     }
@@ -39,12 +43,16 @@ export class EditProfileComponent implements OnInit {
   onSubmit() {
     this.apiService.update(this.customer).subscribe({
       next: () => {
-        alert('Profile updated successfully.');
-        this.router.navigate(['/view-profile']);
+        this.message = 'Profile updated successfully.';
+        this.messageType = 'success';
+        setTimeout(() => {
+          this.router.navigate(['/view-profile']);
+        }, 2000);
       },
       error: (error) => {
         console.error('Update failed:', error);
-        alert('Failed to update profile.');
+        this.message = 'Failed to update profile.';
+        this.messageType = 'error';
       }
     });
   }

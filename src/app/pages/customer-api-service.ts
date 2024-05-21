@@ -20,7 +20,7 @@ export class CustomersApiService {
     
   ) { }
 
-  url = "http://localhost:5154";
+  url = "https://customergroupbapi.azurewebsites.net/";
 
 //   getProducts() : Observable<Product[]> { 
 //     return this.http.get<Product[]>(this.url);
@@ -91,14 +91,9 @@ updateDocuments(customerId: number, formData: FormData): Observable<any> {
     'Authorization': `Bearer ${window.sessionStorage.getItem('token')}`
   });
 
-  console.log(`Sending update request for customer ID: ${customerId}`);
+  //console.log(`Sending update request for customer ID: ${customerId}`);
   
-  return this.http.put<any>(`${this.url}/api/Document/${customerId}`, formData, { headers }).pipe(
-    catchError(error => {
-      console.error('Error updating documents', error);
-      return throwError(() => new Error('Error updating documents'));
-    })
-  );
+  return this.http.put<any>(`${this.url}/api/Document/${customerId}`, formData, { headers });
 }
 
 }

@@ -8,57 +8,61 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, HttpClientModule, CommonModule], // Ensure CommonModule is imported
+  imports: [FormsModule, HttpClientModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   username: string = '';
   password: string = '';
-  passwordFieldType: string = 'password'; // Add this line
+  message: string = '';
+  passwordFieldType: string = 'password';
+  loading: boolean = false; // Track loading state
 
   constructor(private http: HttpClient, private router: Router) {}
 
   onLogin() {
+    this.loading = true; // Set loading to true when login starts
     const loginData = {
       username: this.username,
       password: this.password
     };
 
-    this.http.post<LoginResponse>('http://localhost:5029/api/Accounts', loginData)
+    this.http.post<LoginResponse>('https://authenticationapigroupb.azurewebsites.net/api/Accounts', loginData)
       .subscribe({
         next: (res) => {
+          this.loading = false; // Reset loading state on success
           if (res.mustChangePassword) {
-            alert("Password change required.");
-            window.sessionStorage.setItem("username", this.username); // Store the username
-            this.router.navigate(['/change-password']); // Redirect to password change page
+            this.message = "Password change required. Redirecting...";
+            window.sessionStorage.setItem("username", this.username);
+
+            // Delay navigation to allow the user to read the message
+            setTimeout(() => {
+              this.router.navigate(['/change-password']);
+            }, 1000); // Delay for 1 seconds
           } else if (res.token) {
-            alert("Login successful");
             window.sessionStorage.setItem("token", res.token);
-            window.sessionStorage.setItem("customerId", res.userId.toString());
-            window.sessionStorage.setItem("username", this.username); // Store the username
+            window.sessionStorage.setItem("customerId", this.username);
+            
+            window.sessionStorage.setItem("username", this.username);
             this.router.navigateByUrl('/dashboard');
           } else {
-            alert("Login Unsuccessful, Please check and try again.");
+            this.message = "Login unsuccessful, please check and try again.";
           }
         },
         error: (error) => {
+          this.loading = false; // Reset loading state on error
+          this.message = "Error during login. Please try again.";
           console.error("Login error:", error);
-          alert("Error during login. Please try again.");
         }
       });
   }
-
-  togglePasswordVisibility() {
-    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
-  }
 }
-
 export class LoginResponse {
   constructor(
     public userId: number, 
     public fullName: string,
     public token: string,
-    public mustChangePassword: boolean // Add this property
+    public mustChangePassword: boolean
   ) {}
 }

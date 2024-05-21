@@ -44,7 +44,6 @@ export const routes: Routes = [
 
 
 
-
 // {//after login this is children component  and will be registered
 //   path:'',
 //     component:LayoutComponent,

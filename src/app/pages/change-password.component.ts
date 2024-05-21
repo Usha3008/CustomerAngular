@@ -18,18 +18,14 @@ export class ChangePasswordComponent {
   oldPasswordFieldType: string = 'password';
   newPasswordFieldType: string = 'password';
   errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(private changePasswordService: ChangePasswordService, private router: Router) {}
 
-  toggleOldPasswordVisibility() {
-    this.oldPasswordFieldType = this.oldPasswordFieldType === 'password' ? 'text' : 'password';
-  }
-
-  toggleNewPasswordVisibility() {
-    this.newPasswordFieldType = this.newPasswordFieldType === 'password' ? 'text' : 'password';
-  }
-
   onChangePassword() {
+    this.errorMessage = '';
+    this.successMessage = '';
+
     if (this.newPassword !== this.newPasswordConfirm) {
       this.errorMessage = 'New passwords do not match';
       return;
@@ -42,25 +38,27 @@ export class ChangePasswordComponent {
 
     const username = window.sessionStorage.getItem('username');
     if (!username) {
-      alert('Username not found. Please log in again.');
+      this.errorMessage = 'Username not found. Please log in again.';
       this.router.navigateByUrl('/login');
       return;
     }
 
     this.changePasswordService.changePassword(username, this.oldPassword, this.newPassword)
       .subscribe({
-        next: (response) => {
-          alert(response.message);
-          this.router.navigateByUrl('/login');
+        next: () => {
+          this.successMessage = 'Password changed successfully';
+          setTimeout(() => {
+            this.router.navigateByUrl('/login');
+          }, 2000);
         },
         error: (error) => {
-          this.errorMessage = 'Failed to update password: ' + error.error.message;
+          const message = error.error?.message || error.message || 'Unknown error occurred';
+          this.errorMessage = 'Failed to update password: ' + message;
           console.error('Failed to update password:', error);
         }
       });
   }
 }
-
 
 export class PasswordChangeModel {
   constructor(

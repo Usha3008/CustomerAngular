@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ChangePasswordService {
-  private apiUrl = `http://localhost:5029/api/Accounts`;
+  private apiUrl = `https://authenticationapigroupb.azurewebsites.net/api/Accounts`;
 
   constructor(private http: HttpClient) {}
 
